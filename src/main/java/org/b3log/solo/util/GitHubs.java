@@ -143,7 +143,7 @@ public final class GitHubs {
     public static boolean updateFile(final String pat, final String loginName, final String repoName, final String filePath, final byte[] content) {
         final String fullRepoName = loginName + "/" + repoName;
         try {
-            HttpResponse response = HttpRequest.get("https://api.github.com/repos/" + fullRepoName + "/git/trees/master").header("Authorization", "token " + pat).
+            HttpResponse response = HttpRequest.get("https://api.github.com/repos/" + fullRepoName + "/git/trees/main").header("Authorization", "token " + pat).
                     connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).send();
             int statusCode = response.statusCode();
             response.charset("UTF-8");
