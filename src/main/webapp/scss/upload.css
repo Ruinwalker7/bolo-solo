@@ -1,0 +1,27 @@
+.upload-section {
+    border: 2px solid #0087F7;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#drop_zone_multi {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    padding: 30px;
+    margin-top: 10px;
+    color: #0087F7;
+}
+
+#file_list_multi {
+    list-style: none;
+}
+
+#file_list_multi li {
+    padding: 5px;
+    margin-top: 5px;
+    background-color: #f3f3f3;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+}

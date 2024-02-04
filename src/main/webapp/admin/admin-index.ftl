@@ -23,6 +23,8 @@
     <head>
         <@head title="${adminConsoleLabel} - ${blogTitle}">
             <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/admin.css?${staticResourceVersion}" />
+            <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/upload.css" />
+
             <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/Chart.min.css" />
             <meta name="robots" content="fn__none" />
             <link href="https://ftp.stackoverflow.wiki/bolo/start/css/font-awesome.min.css" rel="stylesheet">
@@ -76,6 +78,11 @@
                             <li>
                                 <div id="tabs_draft-list">
                                     <a href="#article/draft-list">${draftListLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tabs_upload-file">
+                                    <a href="#article/upload-file">${updateFileLabel}</a>
                                 </div>
                             </li>
                         </ul>
@@ -178,6 +185,7 @@
                 <div id="tabsPanel_page-list" class="fn__none"></div>
                 <div id="tabsPanel_others" class="fn__none"></div>
                 <div id="tabsPanel_user-list" class="fn__none"></div>
+                <div id="tabsPanel_upload-file" class="fn__none"></div>
                 <div id="tabsPanel_comment-list" class="fn__none"></div>
                 <div id="tabsPanel_plugin-list" class="fn__none"></div>
                 <div id="tabsPanel_about" class="fn__none"></div>
@@ -256,6 +264,7 @@
         <script src="${staticServePath}/js/admin/preference.js"></script>
         <script src="${staticServePath}/js/admin/pluginList.js"></script>
         <script src="${staticServePath}/js/admin/userList.js"></script>
+        <script src="${staticServePath}/js/admin/uploadFile.js"></script>
         <script src="${staticServePath}/js/admin/categoryList.js"></script>
         <script src="${staticServePath}/js/admin/commentList.js"></script>
         <script src="${staticServePath}/js/admin/plugin.js"></script>

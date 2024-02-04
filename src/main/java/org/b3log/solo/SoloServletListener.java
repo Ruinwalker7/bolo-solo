@@ -395,6 +395,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 "/admin-page-list.do",
                 "/admin-others.do",
                 "/admin-draft-list.do",
+                "/admin-upload-file.do",
                 "/admin-user-list.do",
                 "/admin-category-list.do",
                 "/admin-theme-list.do",

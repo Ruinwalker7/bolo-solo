@@ -66,7 +66,7 @@ public class PermalinkQueryService {
             "/article/comments", "/add-article-from-symphony-comment.do", "/page/comments", "/get-article-content", "/sitemap.xml",
             "/logout", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
             "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",
-            "/admin-draft-list.do", "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label",
+            "/admin-draft-list.do", "/admin-upload-file.do", "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label",
             "/admin-about.do", "/start"
     };
 

@@ -246,11 +246,11 @@ $.extend(Admin.prototype, {
         subNav.slideToggle('normal', function () {
             if (this.style.display !== 'none') {
                 $(it).
-                find('.icon-chevron-down')[0].className = 'icon-chevron-up fn__right'
+                find('.icon-chevron-down')[0].className = 'fa fa-chevron-up fn__right'
                 $(it).addClass('tab-current')
             } else {
                 $(it).
-                find('.icon-chevron-up')[0].className = 'icon-chevron-down fn__right'
+                find('.icon-chevron-up')[0].className = 'fa fa-chevron-down fn__right'
                 $(it).removeClass('tab-current')
             }
 
