@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="bolo" />
+        <module name="bolo-solo" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="bolo-solo" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

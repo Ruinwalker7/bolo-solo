@@ -19,21 +19,26 @@
 -->
 
 <div class="form fn__margin12">
+    <label>图片路径</label>
     <input type="text" id="articleListInput">
-    <button class="search-btn" id="articleListBtn">${searchLabel}</button>
 </div>
 
 <div class="upload-section">
-    <h2>单文件上传 (.md文件)</h2>
+    <h2>博客文件上传 (.md)</h2>
     <input type="file" id="single_upload" accept=".md">
+    <div id="drop_zone_single">点击或拖拽文件到此区域以上传</div>
+    <ul id="file_list_multi"></ul>
 </div>
 
 <div class="upload-section" id="multi_upload_area">
-    <h2>多文件上传 (图片)</h2>
+    <h2>图片文件上传 </h2>
     <input type="file" id="multi_upload" accept="image/*" multiple>
     <div id="drop_zone_multi">或在此区域拖拽图片以上传</div>
     <ul id="file_list_multi"></ul>
 </div>
 
+<div class="fn__right">
+    <button class="marginRight12" id="1111111111">${saveLabel}${draftListLabel}</button>
+</div>
 <div class="fn__clear"></div>
 ${plugins}

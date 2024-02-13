@@ -482,6 +482,10 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/user/{id}", userConsole::getUser);
         DispatcherServlet.get("/console/changeRole/{id}", userConsole::changeUserRole);
 
+        final FileConsole fileConsole = beanManager.getReference(FileConsole.class);
+        DispatcherServlet.post("/console/upload/markdown",fileConsole::uploadFile);
+        DispatcherServlet.post("/console/upload/pictures",fileConsole::uploadImages);
+
         DispatcherServlet.mapping();
     }
 }

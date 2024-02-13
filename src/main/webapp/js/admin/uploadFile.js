@@ -17,69 +17,88 @@
  */
 /**
  * upload local file with images
- *
  */
 
 /* upload-file 相关操作 */
 admin.uploadFile = {
+    uploadMarkdown: function (file){
+        var formData = new FormData();
+        formData.append('file', file);
+        console.log(file)
+        console.log(formData)
+        $.ajax({
+            url: '/console/upload/markdown',
+            type: 'POST',
+            data: formData,
+            processData: false, // 告诉jQuery不要处理发送的数据
+            contentType: false, // 告诉jQuery不要设置内容类型
+            success: function(data) {
+                alert('File uploaded successfully');
+            },
+            error: function() {
+                alert('File upload failed');
+            }
+        });
+    },
+
     init: function (Page) {
-        let dropZoneMultiOriginalText = '或在此区域拖拽图片以上传'; // 保存原始背景文字
-        document.getElementById('single_upload').addEventListener('change', function(event) {
+        let dropZoneMultiOriginalText = '点击或在此区域拖拽图片以上传'; // 保存原始背景文字
+        $('#single_upload').change(function(event) {
+
             if (this.files.length > 0) {
-                let file = this.files[0];
-                if (file.type !== 'text/markdown' && !file.name.endsWith('.md')) {
+                var fileData = this.files[0];
+                // let file = this.files[0];
+                console.log(this.files)
+                console.log(fileData)
+                if (fileData.type !== 'text/markdown' && !fileData.name.endsWith('.md')) {
                     alert('请上传.md文件！');
                     this.value = ''; // 清除选中的文件
                 }
-            }
+                else{
+                    admin.uploadFile.uploadMarkdown(fileData);
+                    }
+                }
         });
 
-        let dropZoneMulti = document.getElementById('drop_zone_multi');
-        let fileListMulti = document.getElementById('file_list_multi');
+        let dropZoneMulti = $('#drop_zone_multi');
 
-        dropZoneMulti.addEventListener('dragover', function(event) {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'copy';
-        });
-
-        dropZoneMulti.addEventListener('dragover', function(event) {
+        dropZoneMulti.on('dragover', function(event) {
             event.preventDefault();
             event.dataTransfer.dropEffect = 'copy';
             this.textContent = '释放以上传文件'; // 改变背景文字
         });
 
-        dropZoneMulti.addEventListener('dragenter', function(event) {
+        dropZoneMulti.on('dragenter', function(event) {
             this.textContent = '释放以上传文件'; // 改变背景文字
         });
 
-        dropZoneMulti.addEventListener('dragleave', function(event) {
+        dropZoneMulti.on('dragleave', function(event) {
             this.textContent = dropZoneMultiOriginalText; // 恢复原始背景文字
         });
 
-        dropZoneMulti.addEventListener('drop', function(event) {
+        dropZoneMulti.on('drop', function(event) {
             event.preventDefault();
             this.textContent = dropZoneMultiOriginalText; // 恢复原始背景文字
             let files = event.dataTransfer.files;
-            processFiles(files);
+            admin.uploadFile.uploadPictures(files);
         });
 
-        document.getElementById('multi_upload').addEventListener('change', function(event) {
-            processFiles(this.files);
+        $('#multi_upload').change(function(event) {
+            admin.uploadFile.uploadPictures(this.files);
         });
-
-        function processFiles(files) {
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
-                if (!file.type.startsWith('image/')) {
-                    alert('仅支持图片文件！');
-                    continue;
-                }
-                let li = document.createElement('li');
-                li.textContent = file.name;
-                fileListMulti.appendChild(li);
-            }
-        }
     },
+    uploadPictures: function(files){
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            if (!file.type.startsWith('image/')) {
+                alert('仅支持图片文件！');
+                continue;
+            }
+            let li = document.createElement('li');
+            li.textContent = file.name;
+            $('#file_list_multi').appendChild(li);
+        }
+    }
 }
 
 /*

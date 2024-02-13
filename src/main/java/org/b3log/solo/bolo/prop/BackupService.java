@@ -251,7 +251,7 @@ public class BackupService {
         }
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
-        final String markdownsPath = servletContext.getRealPath("markdowns");
+        final String markdownsPath = servletContext.getRealPath("/markdowns");
 
         DeleteFolder.delAllFile(markdownsPath);
 
@@ -273,7 +273,6 @@ public class BackupService {
             result = importService.importMarkdownsSync();
         } catch (Exception e) {
             context.renderJSON().renderMsg("从 Markdown zip 恢复备份失败，请重试！" + result);
-
             return;
         }
 

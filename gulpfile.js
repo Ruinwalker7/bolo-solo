@@ -169,3 +169,4 @@ gulp.task('default',
     gulp.series(cleanProcess, sassSkinProcess, sassCommonProcess,
         gulp.parallel(minSkinJS, minJS),
         gulp.parallel(miniPjax, miniAdmin, miniAdminLibs)))
+
