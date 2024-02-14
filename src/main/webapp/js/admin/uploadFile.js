@@ -21,6 +21,7 @@
 
 /* upload-file 相关操作 */
 admin.uploadFile = {
+    name:'',
     init: function (Page) {
         let dropZoneMultiOriginalText = '点击或在此区域拖拽图片以上传'; // 保存原始背景文字
         $('#single_upload').change(function() {
@@ -111,9 +112,11 @@ admin.uploadFile = {
             processData: false, // 告诉jQuery不要处理发送的数据
             contentType: false, // 告诉jQuery不要设置内容类型
             success: function() {
+                admin.uploadFile.name = file.name;
                 $('#drop_zone_single').hide(); // 隐藏拖拽区域
                 $('#fileName').text(file.name); // 设置文件名
                 $('#uploadSuccess').show(); // 显示上传成功信息
+                $('#startC').show();
             },
             error: function() {
                 alert('File upload failed');
@@ -138,9 +141,9 @@ admin.uploadFile = {
                 data: formData,
                 processData: false, // 告诉jQuery不要处理发送的数据
                 contentType: false, // 告诉jQuery不要设置内容类型
-                success: function(data) {
-                    if(data.code!=-1){
-                        data.rslts.forEach(function(item) {
+                success: function(res) {
+                    if(res.code!=-1){
+                        res.rslts.forEach(function(item) {
                             admin.uploadFile.addImage("/markdowns/assets/"+item,item)
                         });
                     }
@@ -149,9 +152,6 @@ admin.uploadFile = {
                     alert('连接服务器失败！');
                 }
             });
-            let li = document.createElement('li');
-            li.textContent = file.name;
-            $('#file_list_multi').appendChild(li);
         }
     },
     showDiv: function (){
@@ -161,9 +161,10 @@ admin.uploadFile = {
             processData: false, // 告诉jQuery不要处理发送的数据
             contentType: false, // 告诉jQuery不要设置内容类型
             success: function() {
-                // 改变div的display属性，使其可见
+                $('#startC').hide();
                 $("#uploadDiv").show();
-                $('#imagesURLInput').val('./assets/');
+                if($('#imagesURLInput').val()=='')
+                    $('#imagesURLInput').val('./assets/');
                 $('#imagesURLInput').prop('disabled', true);
                 $("#confirmBtn").hide();
                 $('#drop_zone_single').show(); // 隐藏拖拽区域
@@ -201,10 +202,48 @@ admin.uploadFile = {
         $('#imagesURLInput').val('');
         $("#uploadDiv").hide();
         $("#confirmBtn").show();
+        $("#imageContainer").empty();
+    },
+    startConv: function (){
+        $.ajax({
+            url: '/console/deal/markdown',
+            type: 'POST',
+            data:{
+                url: $("#imagesURLInput").val()
+            },
+            success: function(res) {
+                if(res.code === 0){
+                    console.log(res.data.articles)
+                    console.log(res.data.articles[0])
+                    admin.uploadFile.downloadMarkdown(res.data.articles[0], admin.uploadFile.name);
+                    admin.uploadFile.refresh();
+                }
+            },
+            error: function() {
+                alert('转换失败！');
+            }
+        });
+    },
+    downloadMarkdown: function (markdownContent, fileName) {
+        // 将字符串转换为Blob
+        var blob = new Blob([markdownContent], { type: 'text/markdown;charset=utf-8' });
 
+        // 创建一个隐藏的可下载链接
+        var downloadLink = document.createElement("a");
+        downloadLink.style.display = "none";
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = fileName; // 设定下载文件名
 
-    }
+        // 将链接添加到DOM中
+        document.body.appendChild(downloadLink);
 
+        // 触发下载
+        downloadLink.click();
+
+        // 清理并移除创建的链接
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(downloadLink.href); // 释放通过URL.createObjectURL()创建的URL
+    },
 }
 
 /*

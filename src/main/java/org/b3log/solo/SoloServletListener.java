@@ -486,6 +486,7 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.post("/console/upload/markdown",fileConsole::uploadFile);
         DispatcherServlet.post("/console/upload/pictures",fileConsole::uploadImages);
         DispatcherServlet.get("/console/upload/clean",fileConsole::cleanDir);
+        DispatcherServlet.post("/console/deal/markdown",fileConsole::dealMarkdown);
 
         DispatcherServlet.mapping();
     }

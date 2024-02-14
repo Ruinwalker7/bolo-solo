@@ -30,6 +30,7 @@ admin.article = {
     isArticle: undefined,
   },
   content: '',
+  mainarticle:'',
   /**
    * @description 获取文章并把值塞入发布文章页面
    * @param {String} id 文章 id
@@ -512,6 +513,8 @@ admin.article = {
         },
       })
     }).click()
+
+
   },
   /**
    * @description 验证发布文章字段的合法性

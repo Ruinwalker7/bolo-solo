@@ -47,7 +47,7 @@
     </div>
 
     <div class="fn__right">
-        <button class="marginRight12" id="1111111111">开始转换</button>
+        <button class="marginRight12" id="startC" onclick="admin.uploadFile.startConv()">开始转换</button>
     </div>
 
     <div class="fn__clear"></div>
