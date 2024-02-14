@@ -107,4 +107,5 @@
     <include path="/CHANGE_LOGS.html"/>
     <include path="/LICENSE.txt"/>
 
+    <include path="/markdowns/assets/**"/>
 </static-files>

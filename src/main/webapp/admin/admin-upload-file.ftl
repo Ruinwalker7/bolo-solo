@@ -18,27 +18,41 @@
 
 -->
 
-<div class="form fn__margin12">
-    <label>图片路径</label>
-    <input type="text" id="articleListInput">
+<div class="form fn__margin12 ">
+    <label>图片路径（要替换的本地路径）：</label>
+    <div class="confirmDiv">
+        <input type="text" id="imagesURLInput" placeholder="默认为'./assets/'">
+        <button onclick="admin.uploadFile.showDiv()" id="confirmBtn">确定</button>
+    </div>
 </div>
 
-<div class="upload-section">
-    <h2>博客文件上传 (.md)</h2>
-    <input type="file" id="single_upload" accept=".md">
-    <div id="drop_zone_single">点击或拖拽文件到此区域以上传</div>
-    <ul id="file_list_multi"></ul>
+<div id="uploadDiv"  style="display: none;">
+    <div class="upload-section">
+        <h2>博客文件上传 (.md)</h2>
+        <input type="file" id="single_upload" accept=".md"  style="display: none;">
+        <div id="drop_zone_single">点击或拖拽文件到此区域以上传</div>
+        <div id="uploadSuccess" style="display: none; text-align: center;">
+            <img id="uploadedImage" src="/images/markdown.png" style="max-width: 80%; width:100px;margin: 0 auto; display: block;">
+            <p id="fileName" style="font-size: 16px"></p>
+        </div>
+        <ul id="file_list_multi"></ul>
+    </div>
+
+    <div class="upload-section" id="multi_upload_area">
+        <h2>图片文件上传</h2>
+        <input type="file" id="multi_upload" accept="image/*" multiple style="display: none;">
+        <div class="image-container" id="imageContainer"></div>
+        <div id="drop_zone_multi">点击或在此区域拖拽图片以上传</div>
+        <ul id="file_list_multi"></ul>
+    </div>
+
+    <div class="fn__right">
+        <button class="marginRight12" id="1111111111">开始转换</button>
+    </div>
+
+    <div class="fn__clear"></div>
 </div>
 
-<div class="upload-section" id="multi_upload_area">
-    <h2>图片文件上传 </h2>
-    <input type="file" id="multi_upload" accept="image/*" multiple>
-    <div id="drop_zone_multi">或在此区域拖拽图片以上传</div>
-    <ul id="file_list_multi"></ul>
-</div>
 
-<div class="fn__right">
-    <button class="marginRight12" id="1111111111">${saveLabel}${draftListLabel}</button>
-</div>
-<div class="fn__clear"></div>
+
 ${plugins}

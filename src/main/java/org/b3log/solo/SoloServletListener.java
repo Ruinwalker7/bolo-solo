@@ -485,6 +485,7 @@ public final class SoloServletListener extends AbstractServletListener {
         final FileConsole fileConsole = beanManager.getReference(FileConsole.class);
         DispatcherServlet.post("/console/upload/markdown",fileConsole::uploadFile);
         DispatcherServlet.post("/console/upload/pictures",fileConsole::uploadImages);
+        DispatcherServlet.get("/console/upload/clean",fileConsole::cleanDir);
 
         DispatcherServlet.mapping();
     }

@@ -21,35 +21,11 @@
 
 /* upload-file 相关操作 */
 admin.uploadFile = {
-    uploadMarkdown: function (file){
-        var formData = new FormData();
-        formData.append('file', file);
-        console.log(file)
-        console.log(formData)
-        $.ajax({
-            url: '/console/upload/markdown',
-            type: 'POST',
-            data: formData,
-            processData: false, // 告诉jQuery不要处理发送的数据
-            contentType: false, // 告诉jQuery不要设置内容类型
-            success: function(data) {
-                alert('File uploaded successfully');
-            },
-            error: function() {
-                alert('File upload failed');
-            }
-        });
-    },
-
     init: function (Page) {
         let dropZoneMultiOriginalText = '点击或在此区域拖拽图片以上传'; // 保存原始背景文字
-        $('#single_upload').change(function(event) {
-
+        $('#single_upload').change(function() {
             if (this.files.length > 0) {
                 var fileData = this.files[0];
-                // let file = this.files[0];
-                console.log(this.files)
-                console.log(fileData)
                 if (fileData.type !== 'text/markdown' && !fileData.name.endsWith('.md')) {
                     alert('请上传.md文件！');
                     this.value = ''; // 清除选中的文件
@@ -60,31 +36,88 @@ admin.uploadFile = {
                 }
         });
 
-        let dropZoneMulti = $('#drop_zone_multi');
+        $('#drop_zone_single').click(function(){
+            $('#single_upload').click(); // 触发文件输入的点击事件
+        });
 
-        dropZoneMulti.on('dragover', function(event) {
+        $('#drop_zone_single').on('dragover', function(event) {
             event.preventDefault();
             event.dataTransfer.dropEffect = 'copy';
             this.textContent = '释放以上传文件'; // 改变背景文字
         });
 
-        dropZoneMulti.on('dragenter', function(event) {
+        $('#drop_zone_single').on('dragenter', function(event) {
             this.textContent = '释放以上传文件'; // 改变背景文字
         });
 
-        dropZoneMulti.on('dragleave', function(event) {
+        $('#drop_zone_single').on('dragleave', function(event) {
             this.textContent = dropZoneMultiOriginalText; // 恢复原始背景文字
         });
 
-        dropZoneMulti.on('drop', function(event) {
+        $('#drop_zone_single').on('drop', function(event) {
             event.preventDefault();
             this.textContent = dropZoneMultiOriginalText; // 恢复原始背景文字
-            let files = event.dataTransfer.files;
+            // let files = event.dataTransfer.files;
+            var files = event.originalEvent.dataTransfer.files; // 获取文件列表
+
+            // 检查是否是单个Markdown文件
+            if(files.length === 1 && files[0].name.endsWith('.md')) {
+                // 进行文件上传操作
+                console.log("准备上传文件：", files[0].name);
+                admin.uploadFile.uploadMarkdown(files[0]);
+            } else {
+                alert("请拖拽单个Markdown文件！");
+            }
+
+        });
+
+
+        $('#drop_zone_multi').click(function(){
+            $('#multi_upload').click(); // 触发文件输入的点击事件
+        });
+        $('#drop_zone_multi').on('dragover', function(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+            this.textContent = '释放以上传文件'; // 改变背景文字
+        });
+
+        $('#drop_zone_multi').on('dragenter', function(event) {
+            this.textContent = '释放以上传文件'; // 改变背景文字
+        });
+
+        $('#drop_zone_multi').on('dragleave', function(event) {
+            this.textContent = dropZoneMultiOriginalText; // 恢复原始背景文字
+        });
+
+        $('#drop_zone_multi').on('drop', function(event) {
+            event.preventDefault();
+            this.textContent = dropZoneMultiOriginalText;
+            var files = event.originalEvent.dataTransfer.files;
             admin.uploadFile.uploadPictures(files);
         });
 
-        $('#multi_upload').change(function(event) {
+        $('#multi_upload').change(function() {
             admin.uploadFile.uploadPictures(this.files);
+        });
+
+    },
+    uploadMarkdown: function (file){
+        var formData = new FormData();
+        formData.append('file', file);
+        $.ajax({
+            url: '/console/upload/markdown',
+            type: 'POST',
+            data: formData,
+            processData: false, // 告诉jQuery不要处理发送的数据
+            contentType: false, // 告诉jQuery不要设置内容类型
+            success: function() {
+                $('#drop_zone_single').hide(); // 隐藏拖拽区域
+                $('#fileName').text(file.name); // 设置文件名
+                $('#uploadSuccess').show(); // 显示上传成功信息
+            },
+            error: function() {
+                alert('File upload failed');
+            }
         });
     },
     uploadPictures: function(files){
@@ -94,11 +127,84 @@ admin.uploadFile = {
                 alert('仅支持图片文件！');
                 continue;
             }
+            let formData = new FormData();
+            for (var j = 0; j < files.length; j++) {
+                formData.append("files[]", files[j]); // 添加文件到FormData
+            }
+
+            $.ajax({
+                url: '/console/upload/pictures',
+                type: 'POST',
+                data: formData,
+                processData: false, // 告诉jQuery不要处理发送的数据
+                contentType: false, // 告诉jQuery不要设置内容类型
+                success: function(data) {
+                    if(data.code!=-1){
+                        data.rslts.forEach(function(item) {
+                            admin.uploadFile.addImage("/markdowns/assets/"+item,item)
+                        });
+                    }
+                },
+                error: function() {
+                    alert('连接服务器失败！');
+                }
+            });
             let li = document.createElement('li');
             li.textContent = file.name;
             $('#file_list_multi').appendChild(li);
         }
+    },
+    showDiv: function (){
+        $.ajax({
+            url: '/console/upload/clean',
+            type: 'GET',
+            processData: false, // 告诉jQuery不要处理发送的数据
+            contentType: false, // 告诉jQuery不要设置内容类型
+            success: function() {
+                // 改变div的display属性，使其可见
+                $("#uploadDiv").show();
+                $('#imagesURLInput').val('./assets/');
+                $('#imagesURLInput').prop('disabled', true);
+                $("#confirmBtn").hide();
+                $('#drop_zone_single').show(); // 隐藏拖拽区域
+                $('#uploadSuccess').hide(); // 显示上传成功信息
+            },
+            error: function() {
+                alert('连接服务器失败！');
+            }
+        });
+    },
+    addImage: function(imageSrc, imageName) {
+        const container = document.getElementById('imageContainer');
+
+        // 创建图片元素
+        const img = document.createElement('img');
+        img.src = imageSrc;
+        img.alt = imageName;
+
+        // 创建文件名文本
+        const name = document.createElement('div');
+        name.classList.add('image-name');
+        name.textContent = imageName;
+
+        // 创建包含图片和文件名的盒子
+        const imageBox = document.createElement('div');
+        imageBox.classList.add('image-box');
+        imageBox.appendChild(img);
+        imageBox.appendChild(name);
+
+        // 将盒子添加到容器中
+        container.appendChild(imageBox);
+    },
+    refresh: function (){
+        $('#imagesURLInput').prop('disabled', false);
+        $('#imagesURLInput').val('');
+        $("#uploadDiv").hide();
+        $("#confirmBtn").show();
+
+
     }
+
 }
 
 /*
@@ -107,5 +213,5 @@ admin.uploadFile = {
 admin.register['upload-file'] = {
     'obj': admin.uploadFile,
     'init': admin.uploadFile.init,
+    'refresh': admin.uploadFile.refresh,
 }
-// 'refresh': admin.uploadFile.init,
